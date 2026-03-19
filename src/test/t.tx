@@ -1,0 +1,6 @@
+ <div className="mt-4 rounded-xl border border-border bg-card p-4 text-xs text-muted-foreground">
+            <p className="font-bold text-foreground mb-1">Demo Accounts</p>
+            <p>Landlord: +265888123456 / password</p>
+            <p>Tenant: +265999234567 / password</p>
+            <p>Admin: +265888000000 / admin123</p>
+          </div>
