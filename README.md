@@ -1,73 +1,152 @@
-# Welcome to your Lovable project
+# Peza Nyumba - Find Affordable Rooms & Houses in Malawi
 
-## Project info
+A full-stack real estate platform for finding rental properties in Malawi.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Features
 
-## How can I edit this code?
+- 🔐 Phone-based authentication
+- 🏠 Browse rental listings (houses, rooms, apartments, bedsitters, offices)
+- 📍 Map view with property locations
+- ❤️ Save favorite listings
+- 🚩 Report fake or inappropriate listings
+- 📱 PWA support - install on your phone
+- 📞 Contact landlords directly via WhatsApp
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+### Frontend
+- React 18 + TypeScript
+- Vite
+- TailwindCSS + shadcn/ui
+- React Router
+- React Query
+- Leaflet Maps
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+### Backend
+- Node.js + Express
+- TypeScript
+- Supabase (PostgreSQL)
+- JWT Authentication
 
-Changes made via Lovable will be committed automatically to this repo.
+## Quick Start
 
-**Use your preferred IDE**
+### Prerequisites
+- Node.js 18+
+- Supabase account
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 1. Clone and Install
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+```bash
+git clone https://github.com/YOTCHEB/peza-nyumba2.git
+cd peza-nyumba2
 
-Follow these steps:
+# Install frontend dependencies
+npm install
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Install backend dependencies
+cd server
+npm install
+cd ..
+```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 2. Set Up Supabase
 
-# Step 3: Install the necessary dependencies.
-npm i
+1. Create a project at [supabase.com](https://supabase.com)
+2. Go to SQL Editor and run `server/src/database/schema.sql`
+3. Copy your **Project URL** and **service_role key**
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+### 3. Configure Environment
+
+**Backend** (`server/.env`):
+```env
+PORT=5000
+NODE_ENV=development
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your-key-here
+JWT_SECRET=your-secret-key-here
+FRONTEND_URL=http://localhost:5173
+```
+
+**Frontend** (`.env`):
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+
+### 4. Seed Database
+
+```bash
+cd server
+npm run seed
+```
+
+### 5. Run the App
+
+**Terminal 1 - Backend:**
+```bash
+cd server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+**Terminal 2 - Frontend:**
+```bash
+npm run dev
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Visit: http://localhost:5173
 
-**Use GitHub Codespaces**
+## Demo Login
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+| Role | Phone | Password |
+|------|-------|----------|
+| Landlord | +265888123456 | password |
+| Tenant | +265999234567 | password |
+| Admin | +265888000000 | admin123 |
 
-## What technologies are used for this project?
+## Project Structure
 
-This project is built with:
+```
+pezay/
+├── server/              # Backend
+│   ├── src/
+│   │   ├── routes/     # API endpoints
+│   │   ├── middleware/ # Auth middleware
+│   │   ├── database/   # SQL schema
+│   │   └── scripts/    # Seed script
+│   └── public/images/  # Property images
+├── src/                # Frontend
+│   ├── components/     # React components
+│   ├── pages/          # Page components
+│   └── lib/            # Utilities & API
+└── public/             # Static assets
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## API Endpoints
 
-## How can I deploy this project?
+- `POST /api/auth/login` - Login with phone
+- `POST /api/auth/register` - Register new user
+- `GET /api/listings` - Get all listings
+- `GET /api/listings/:id` - Get single listing
+- `POST /api/listings` - Create listing (landlord)
+- `GET /api/favorites` - Get favorites
+- `POST /api/reports` - Report listing
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## Deployment
 
-## Can I connect a custom domain to my Lovable project?
+### Frontend
+Deploy to Vercel, Netlify, or Cloudflare Pages
 
-Yes, you can!
+### Backend
+Deploy to Railway, Render, or Heroku
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Database
+Supabase is already cloud-hosted
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## License
+
+ISC
+
+## Author
+
+**Yotchek Kandolo Jean**
+- GitHub: [@YOTCHEB](https://github.com/YOTCHEB)
+- Email: yotchebkandolojean@gmail.com
