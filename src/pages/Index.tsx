@@ -14,26 +14,28 @@ const Index = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <HeroSearch />
+      <main className="flex-1"> {/* Offset for fixed header */}
+        <div className="pt-16">
+          <HeroSearch />
 
-      {/* How It Works */}
-      <section className="border-t">
-        <div className="container py-12">
-          <h2 className="text-center font-display text-xl font-bold">How It Works</h2>
-          <p className="text-center text-sm text-muted-foreground mt-1">Three simple steps to your new home</p>
-          <div className="mt-8 grid gap-4 sm:grid-cols-3">
+        {/* How It Works */}
+        <section className="border-t border-border/60 bg-gradient-to-b from-white to-slate-50/50">
+        <div className="container py-16">
+          <h2 className="text-center font-display text-2xl font-bold tracking-tight">How It Works</h2>
+          <p className="text-center text-sm text-muted-foreground mt-2.5">Three simple steps to your new home</p>
+          <div className="mt-10 grid gap-6 sm:grid-cols-3">
             {[
-              { icon: <HiOutlineSearch size={24} className="text-primary" />, title: "Search", desc: "Browse houses by city, type, and price. Filter for student rooms, family homes, or business spaces.", num: "01" },
-              { icon: <HiOutlinePhotograph size={24} className="text-primary" />, title: "View Details", desc: "See photos, amenities, location on map, and full property info before contacting.", num: "02" },
-              { icon: <HiOutlinePhone size={24} className="text-primary" />, title: "Contact", desc: "Call or WhatsApp the landlord directly. No middlemen, no agency fees.", num: "03" },
+              { icon: <HiOutlineSearch size={26} className="text-primary" />, title: "Search", desc: "Browse houses by city, type, and price. Filter for student rooms, family homes, or business spaces.", num: "01" },
+              { icon: <HiOutlinePhotograph size={26} className="text-primary" />, title: "View Details", desc: "See photos, amenities, location on map, and full property info before contacting.", num: "02" },
+              { icon: <HiOutlinePhone size={26} className="text-primary" />, title: "Contact", desc: "Call or WhatsApp the landlord directly. No middlemen, no agency fees.", num: "03" },
             ].map((step) => (
-              <div key={step.num} className="group rounded-xl border border-border bg-card p-6 transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
+              <div key={step.num} className="group rounded-2xl border border-border/60 bg-card p-7 transition-all hover:border-primary/30 hover:shadow-soft-lg hover:-translate-y-1">
                 <div className="flex items-center justify-between">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">{step.icon}</div>
-                  <span className="font-display text-3xl font-bold text-muted/50">{step.num}</span>
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 group-hover:scale-110 transition-transform">{step.icon}</div>
+                  <span className="font-display text-4xl font-bold text-muted/30">{step.num}</span>
                 </div>
-                <h3 className="mt-4 font-display font-bold">{step.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
+                <h3 className="mt-5 font-display font-bold text-lg">{step.title}</h3>
+                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
               </div>
             ))}
           </div>
@@ -41,17 +43,17 @@ const Index = () => {
       </section>
 
       {/* Student Banner */}
-      <section className="border-t">
-        <div className="container py-8">
-          <div className="flex flex-col sm:flex-row items-center gap-5 rounded-xl border border-accent/20 bg-accent/5 p-6">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-accent/10">
-              <HiOutlineAcademicCap size={28} className="text-accent" />
+      <section className="border-t border-border/60">
+        <div className="container py-10">
+          <div className="flex flex-col sm:flex-row items-center gap-6 rounded-2xl border border-border/60 bg-gradient-to-br from-accent/5 to-primary/5 p-8 shadow-soft">
+            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-accent/10 shadow-sm">
+              <HiOutlineAcademicCap size={32} className="text-accent" />
             </div>
             <div className="text-center sm:text-left flex-1">
-              <h3 className="font-display text-lg font-bold">Students & Young Professionals</h3>
-              <p className="text-sm text-muted-foreground mt-1">Finding a room near UNIMA, LUANAR, Mzuzu University, or in Dzaleka? We have affordable rooms starting from MK 20,000/month.</p>
+              <h3 className="font-display text-xl font-bold">Students & Young Professionals</h3>
+              <p className="text-sm text-muted-foreground mt-2">Finding a room near Zomba, Lilongwe or Dzaleka? We have affordable rooms close to universities and city centers.</p>
             </div>
-            <Link to="/listings?type=Room" className="shrink-0 rounded-xl bg-accent px-5 py-2.5 text-sm font-bold text-accent-foreground transition-all hover:shadow-lg hover:shadow-accent/20">Find Rooms →</Link>
+            <Link to="/listings?type=Room" className="shrink-0 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-primary-foreground transition-all hover:shadow-md hover:shadow-primary/25 hover:-translate-y-0.5">Find Rooms →</Link>
           </div>
         </div>
       </section>
@@ -97,6 +99,8 @@ const Index = () => {
           </div>
         </div>
       </section>
+      </div>
+      </main>
 
       <Footer />
     </div>

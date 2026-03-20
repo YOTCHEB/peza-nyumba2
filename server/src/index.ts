@@ -11,6 +11,10 @@ import reportsRoutes from './routes/reports.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Resolve public path relative to this file's location
+// src/index.ts -> ../public = server/public
+const publicPath = path.resolve(__dirname, '../public');
+
 // Load environment variables
 dotenv.config();
 
@@ -19,14 +23,31 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'http://localhost:8080', 'http://localhost:3000'],
   credentials: true,
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from public directory
-app.use('/images', express.static(path.join(__dirname, '../public/images')));
+console.log('Server file directory:', __dirname);
+console.log('Public path:', publicPath);
+console.log('Serving images from:', path.join(publicPath, 'images'));
+
+// Debug middleware for image requests
+app.use('/images', (req, res, next) => {
+  const filePath = path.join(publicPath, req.path);
+  console.log('[Image Request]', req.path, '->', filePath);
+  next();
+});
+
+app.use('/images', express.static(path.join(publicPath, 'images')));
+
+// 404 handler for images
+app.use('/images', (req, res) => {
+  console.log('[Image 404]', req.path, 'not found in', path.join(publicPath, 'images'));
+  res.status(404).json({ error: 'Image not found', path: req.path });
+});
 
 // Request logging
 app.use((req, res, next) => {

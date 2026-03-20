@@ -1,17 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/lib/auth";
-import { sampleListings, formatPrice } from "@/lib/data";
+import { listingsApi } from "@/lib/api";
+import { formatPrice } from "@/lib/data";
 import { Listing } from "@/lib/types";
 import { Home, Eye, Clock, Star, Users, Check, X, Trash2, Shield } from "lucide-react";
 
 const AdminDashboard = () => {
   const { user } = useAuth();
-  const [listings, setListings] = useState<Listing[]>(sampleListings);
+  const [listings, setListings] = useState<Listing[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [tab, setTab] = useState<"overview" | "listings" | "users">("overview");
   const [filterStatus, setFilterStatus] = useState("all");
+
+  // Load all listings from API
+  useEffect(() => {
+    const loadListings = async () => {
+      try {
+        const data = await listingsApi.getAll();
+        setListings(data.listings || []);
+      } catch (err) {
+        console.error("Failed to load listings:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadListings();
+  }, []);
 
   if (!user || user.role !== "admin") {
     return (<div className="flex min-h-screen flex-col"><Header /><div className="container flex flex-1 items-center justify-center"><div className="text-center"><Shield size={48} className="mx-auto text-muted-foreground" /><h1 className="mt-3 text-xl font-extrabold">Admin Access Only</h1><Link to="/login" className="mt-4 inline-block rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground">Login →</Link></div></div><Footer /></div>);
@@ -26,17 +43,34 @@ const AdminDashboard = () => {
   const filteredListings = filterStatus === "all" ? listings : filterStatus === "pending" ? pending : filterStatus === "featured" ? featured : listings.filter((l) => l.status === filterStatus);
 
   const demoUsers = [
-    { name: "James Banda", email: "landlord@test.com", role: "landlord", listings: 3 },
+    { name: "James Banda", email: "landlord@test.com", role: "landlord", listings: listings.filter(l => l.landlordName === "James Banda").length },
     { name: "Grace Phiri", email: "tenant@test.com", role: "tenant", listings: 0 },
-    { name: "Emmanuel Habimana", email: "emmanuel@test.com", role: "landlord", listings: 2 },
+    { name: "Emmanuel Habimana", email: "emmanuel@test.com", role: "landlord", listings: listings.filter(l => l.landlordName === "Emmanuel Habimana").length },
     { name: "Mercy Chirwa", email: "mercy@test.com", role: "tenant", listings: 0 },
-    { name: "Agnes Nkhoma", email: "agnes@test.com", role: "landlord", listings: 1 },
+    { name: "Agnes Nkhoma", email: "agnes@test.com", role: "landlord", listings: listings.filter(l => l.landlordName === "Agnes Nkhoma").length },
   ];
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen flex-col">
+        <Header />
+        <div className="container flex flex-1 items-center justify-center">
+          <div className="text-center">
+            <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+            <p className="mt-4 text-muted-foreground">Loading dashboard...</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <div className="container flex-1 py-6">
+      <main className="flex-1">
+        <div className="pt-16">
+          <div className="container flex-1 py-6">
         <h1 className="flex items-center gap-2 text-xl font-extrabold"><Shield className="text-primary" size={20} /> Admin Dashboard</h1>
         <div className="mt-4 flex gap-1 rounded-xl border-2 p-1">
           {([["overview", "📊 Overview"], ["listings", "🏠 Listings"], ["users", "👥 Users"]] as const).map(([k, label]) => (
@@ -108,7 +142,9 @@ const AdminDashboard = () => {
             </div>
           ))}</div>
         )}
+        </div>
       </div>
+      </main>
       <Footer />
     </div>
   );

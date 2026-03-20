@@ -6,7 +6,9 @@ const Contact = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <div className="container max-w-4xl py-10">
+      <main className="flex-1">
+        <div className="pt-16">
+          <div className="container max-w-4xl py-10">
         <h1 className="font-display text-3xl font-bold">Contact <span className="text-primary">Us</span></h1>
         <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
           Have questions, suggestions, or need assistance? We're here to help! Reach out to us through any of the channels below.
@@ -76,6 +78,8 @@ const Contact = () => {
           </div>
         </div>
       </div>
+      </div>
+      </main>
       <Footer />
     </div>
   );

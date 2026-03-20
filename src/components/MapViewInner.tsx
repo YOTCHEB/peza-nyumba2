@@ -32,8 +32,8 @@ const MapViewInner = ({ listings, className = "" }: MapViewInnerProps) => {
   const center: [number, number] = [-14.0, 34.0];
 
   return (
-    <div className={`overflow-hidden rounded-xl border-2 border-border ${className}`}>
-      <MapContainer center={center} zoom={7} className="h-full w-full" style={{ minHeight: 300 }}>
+    <div className={`overflow-hidden rounded-xl border-2 border-border ${className}`} style={{ zIndex: 0 }}>
+      <MapContainer center={center} zoom={7} className="h-full w-full" style={{ minHeight: 300, zIndex: 0 }}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

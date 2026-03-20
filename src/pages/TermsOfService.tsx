@@ -6,7 +6,9 @@ const TermsOfService = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <div className="container max-w-3xl py-10">
+      <main className="flex-1">
+        <div className="pt-16">
+          <div className="container max-w-3xl py-10">
         <div className="flex items-center gap-3">
           <HiOutlineDocumentText size={32} className="text-primary" />
           <h1 className="font-display text-3xl font-bold">Terms of Service</h1>
@@ -184,6 +186,8 @@ const TermsOfService = () => {
           </section>
         </div>
       </div>
+      </div>
+      </main>
       <Footer />
     </div>
   );

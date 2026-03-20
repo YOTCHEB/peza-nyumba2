@@ -6,7 +6,9 @@ const PrivacyPolicy = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <div className="container max-w-3xl py-10">
+      <main className="flex-1">
+        <div className="pt-16">
+          <div className="container max-w-3xl py-10">
         <div className="flex items-center gap-3">
           <HiOutlineLockClosed size={32} className="text-primary" />
           <h1 className="font-display text-3xl font-bold">Privacy Policy</h1>
@@ -130,6 +132,8 @@ const PrivacyPolicy = () => {
           </section>
         </div>
       </div>
+      </div>
+      </main>
       <Footer />
     </div>
   );

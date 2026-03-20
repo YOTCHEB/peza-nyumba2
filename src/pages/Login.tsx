@@ -24,7 +24,9 @@ const Login = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <div className="container flex flex-1 items-center justify-center py-10">
+      <main className="flex-1">
+        <div className="pt-16">
+          <div className="container flex flex-1 items-center justify-center py-10">
         <div className="w-full max-w-sm">
           <div className="rounded-xl border border-border bg-card p-6 sm:p-8">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 mx-auto">
@@ -61,6 +63,8 @@ const Login = () => {
           </div>
         </div>
       </div>
+      </div>
+      </main>
       <Footer />
     </div>
   );

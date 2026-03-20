@@ -4,6 +4,12 @@ import { getSupabaseClient } from '../lib/supabase.js';
 
 const router = Router();
 
+// Helper function to normalize image URLs to relative paths
+function normalizeImageUrls(images: string[]): string[] {
+  if (!images) return [];
+  return images.map(img => img.replace('http://localhost:5000/images/', '/images/'));
+}
+
 // Get user's favorites
 router.get('/', authenticate, async (req: AuthRequest, res) => {
   try {
@@ -34,7 +40,7 @@ router.get('/', authenticate, async (req: AuthRequest, res) => {
         area: fav.listings.area,
         description: fav.listings.description,
         amenities: fav.listings.amenities || [],
-        images: fav.listings.images || [],
+        images: normalizeImageUrls(fav.listings.images || []),
         contactPhone: fav.listings.contact_phone,
         contactWhatsapp: fav.listings.contact_whatsapp,
         status: fav.listings.status,

@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { favoritesApi } from "./api";
 import { useAuth } from "./auth";
+import { useToast } from "@/hooks/use-toast";
 
 export interface FavoriteListing {
   id: string;
@@ -40,6 +41,7 @@ const FavoritesContext = createContext<FavoritesContextType | null>(null);
 
 export function FavoritesProvider({ children }: { children: ReactNode }) {
   const { isAuthenticated } = useAuth();
+  const { toast } = useToast();
   const [favorites, setFavorites] = useState<FavoriteListing[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -67,13 +69,17 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
   const toggleFavorite = async (id: string) => {
     if (!isAuthenticated) {
-      alert("Please login to save favorites");
+      toast({
+        title: "Authentication required",
+        description: "Please login to save favorites",
+        variant: "destructive",
+      });
       return;
     }
 
     try {
       const isFav = isFavorite(id);
-      
+
       if (isFav) {
         await favoritesApi.remove(id);
         setFavorites(prev => prev.filter(f => f.listing.id !== id));
@@ -81,10 +87,18 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
         await favoritesApi.add(id);
         // Reload to get the full listing data
         await loadFavorites();
+        toast({
+          title: "Added to favorites",
+          description: "Property saved successfully",
+        });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to toggle favorite:", error);
-      throw error;
+      toast({
+        title: "Error",
+        description: error.message || "Failed to update favorites. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 

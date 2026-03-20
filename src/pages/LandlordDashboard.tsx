@@ -1,17 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/lib/auth";
-import { sampleListings, formatPrice, CITIES, PROPERTY_TYPES, AMENITY_OPTIONS } from "@/lib/data";
+import { listingsApi } from "@/lib/api";
+import { formatPrice, CITIES, PROPERTY_TYPES, AMENITY_OPTIONS } from "@/lib/data";
 import { Listing, PropertyType, City } from "@/lib/types";
 import { Home, Eye, Check, Plus, Edit, Trash2, X } from "lucide-react";
 
 const LandlordDashboard = () => {
   const { user } = useAuth();
-  const [listings, setListings] = useState<Listing[]>(sampleListings.filter((l) => l.landlordName === user?.fullName || l.id <= "3"));
+  const [listings, setListings] = useState<Listing[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [editing, setEditing] = useState<Listing | null>(null);
   const [showForm, setShowForm] = useState(false);
+
+  // Load landlord's listings from API
+  useEffect(() => {
+    const loadListings = async () => {
+      if (!user) return;
+      try {
+        const data = await listingsApi.getMyListings();
+        setListings(data.listings || []);
+      } catch (err) {
+        console.error("Failed to load listings:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadListings();
+  }, [user]);
+
   const totalViews = listings.reduce((s, l) => s + l.viewCount, 0);
   const available = listings.filter((l) => l.status === "Available").length;
   const emptyListing: Partial<Listing> = { title: "", propertyType: "House", bedrooms: 1, rentPrice: 0, city: "Lilongwe", area: "", description: "", amenities: [], images: [], contactPhone: user?.phone || "", contactWhatsapp: user?.phone || "", status: "Available", isApproved: false, isFeatured: false, viewCount: 0, createdAt: new Date().toISOString().split("T")[0], landlordName: user?.fullName || "", lat: -13.9626, lng: 33.7741 };
@@ -27,10 +46,27 @@ const LandlordDashboard = () => {
     return (<div className="flex min-h-screen flex-col"><Header /><div className="container flex flex-1 items-center justify-center"><div className="text-center"><Home size={48} className="mx-auto text-muted-foreground" /><h1 className="mt-3 text-xl font-extrabold">Landlord Access Only</h1><Link to="/login" className="mt-4 inline-block rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground">Login →</Link></div></div><Footer /></div>);
   }
 
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen flex-col">
+        <Header />
+        <div className="container flex flex-1 items-center justify-center">
+          <div className="text-center">
+            <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+            <p className="mt-4 text-muted-foreground">Loading your listings...</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <div className="container flex-1 py-6">
+      <main className="flex-1">
+        <div className="pt-16">
+          <div className="container flex-1 py-6">
         <div className="flex items-center justify-between">
           <h1 className="text-xl font-extrabold">My Dashboard</h1>
           <button onClick={openAdd} className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground active:scale-95"><Plus size={16} /> Add Listing</button>
@@ -91,7 +127,9 @@ const LandlordDashboard = () => {
             </div>
           ))}
         </div>
+        </div>
       </div>
+      </main>
       <Footer />
     </div>
   );

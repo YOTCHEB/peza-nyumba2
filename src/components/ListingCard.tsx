@@ -14,13 +14,13 @@ const ListingCard = ({ listing }: ListingCardProps) => {
   const fav = isFavorite(listing.id);
 
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
+    <div className="group relative overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1">
       <button
         onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(listing.id); }}
-        className="absolute right-2.5 top-2.5 z-10 flex h-10 w-10 items-center justify-center rounded-full glass border border-border/50 transition-all active:scale-90"
+        className="absolute right-3 top-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 backdrop-blur-sm border border-border/50 shadow-sm transition-all active:scale-90 hover:scale-110 hover:border-primary/30"
         aria-label={fav ? "Remove from favorites" : "Add to favorites"}
       >
-        {fav ? <HiHeart size={18} className="text-destructive" /> : <HiOutlineHeart size={18} className="text-foreground/70" />}
+        {fav ? <HiHeart size={18} className="text-destructive" /> : <HiOutlineHeart size={18} className="text-muted-foreground" />}
       </button>
 
       <Link to={`/listings/${listing.id}`}>
@@ -31,21 +31,21 @@ const ListingCard = ({ listing }: ListingCardProps) => {
             <div className="flex h-full items-center justify-center text-4xl bg-secondary">🏠</div>
           )}
           {listing.isFeatured && (
-            <span className="absolute left-2.5 top-2.5 rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-bold text-accent-foreground uppercase tracking-wider">Featured</span>
+            <span className="absolute left-3 top-3 rounded-full bg-primary px-3 py-1 text-[10px] font-bold text-primary-foreground uppercase tracking-wider shadow-sm">Featured</span>
           )}
         </div>
-        <div className="p-3 sm:p-4">
-          <h3 className="text-sm font-bold leading-tight text-foreground group-hover:text-primary transition-colors line-clamp-2">{listing.title}</h3>
-          <p className="mt-2 text-lg font-bold text-primary font-display">
+        <div className="p-4">
+          <h3 className="text-sm font-semibold leading-tight text-foreground group-hover:text-primary transition-colors line-clamp-2">{listing.title}</h3>
+          <p className="mt-2.5 text-xl font-bold text-primary font-display">
             {formatPrice(listing.rentPrice)}
-            <span className="text-xs font-normal text-muted-foreground">/mo</span>
+            <span className="text-xs font-normal text-muted-foreground">/month</span>
           </p>
-          <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
-            <span className="flex items-center gap-1"><HiOutlineLocationMarker size={13} /> {listing.area}, {listing.city}</span>
-            {listing.bedrooms > 0 && <span className="flex items-center gap-1"><BedDouble size={13} /> {listing.bedrooms} bed{listing.bedrooms > 1 ? "s" : ""}</span>}
+          <div className="mt-2.5 flex flex-wrap gap-x-3 gap-y-1.5 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1"><HiOutlineLocationMarker size={14} /> {listing.area}, {listing.city}</span>
+            {listing.bedrooms > 0 && <span className="flex items-center gap-1"><BedDouble size={14} /> {listing.bedrooms} bed{listing.bedrooms > 1 ? "s" : ""}</span>}
           </div>
           {listing.status === "Taken" && (
-            <span className="mt-2 inline-block rounded-full bg-destructive/10 border border-destructive/20 px-2.5 py-0.5 text-xs font-bold text-destructive">TAKEN</span>
+            <span className="mt-2.5 inline-block rounded-full bg-destructive/10 border border-destructive/20 px-3 py-1 text-xs font-bold text-destructive">TAKEN</span>
           )}
         </div>
       </Link>

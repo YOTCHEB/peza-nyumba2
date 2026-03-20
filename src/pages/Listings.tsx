@@ -5,19 +5,20 @@ import Footer from "@/components/Footer";
 import ListingCard from "@/components/ListingCard";
 import FilterBar from "@/components/FilterBar";
 import MapView from "@/components/MapView";
-import { sampleListings } from "@/lib/data";
-import { Filters, City, PropertyType } from "@/lib/types";
+import { useApi } from "@/lib/api-provider";
+import { Filters, City, PropertyType, Listing } from "@/lib/types";
 import { HiOutlineFilter, HiOutlineMap, HiOutlineViewGrid } from "react-icons/hi";
 
 const ListingsPage = () => {
   const [searchParams] = useSearchParams();
+  const { listings, isLoading } = useApi();
   const [filters, setFilters] = useState<Filters>({ city: (searchParams.get("city") as City) || "", propertyType: (searchParams.get("type") as PropertyType) || "", minPrice: 0, maxPrice: 0, bedrooms: "", search: searchParams.get("q") || "" });
   const [sortBy, setSortBy] = useState("newest");
   const [showFilters, setShowFilters] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "map">("grid");
 
   const filtered = useMemo(() => {
-    let r = sampleListings.filter((l) => l.isApproved);
+    let r: Listing[] = listings.filter((l) => l.isApproved);
     if (filters.city) r = r.filter((l) => l.city === filters.city);
     if (filters.propertyType) r = r.filter((l) => l.propertyType === filters.propertyType);
     if (filters.minPrice) r = r.filter((l) => l.rentPrice >= filters.minPrice);
@@ -28,12 +29,29 @@ const ListingsPage = () => {
     else if (sortBy === "price-low") r.sort((a, b) => a.rentPrice - b.rentPrice);
     else if (sortBy === "price-high") r.sort((a, b) => b.rentPrice - a.rentPrice);
     return r;
-  }, [filters, sortBy]);
+  }, [listings, filters, sortBy]);
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen flex-col">
+        <Header />
+        <div className="container flex flex-1 items-center justify-center">
+          <div className="text-center">
+            <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+            <p className="mt-4 text-muted-foreground">Loading listings...</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <div className="container flex-1 py-6">
+      <main className="flex-1">
+        <div className="pt-16">
+          <div className="container flex-1 py-6">
         <div className="flex items-center justify-between gap-2">
           <h1 className="font-display text-xl font-bold">Explore Listings</h1>
           <div className="flex items-center gap-2">
@@ -68,7 +86,9 @@ const ListingsPage = () => {
             )}
           </div>
         </div>
+        </div>
       </div>
+      </main>
       <Footer />
     </div>
   );

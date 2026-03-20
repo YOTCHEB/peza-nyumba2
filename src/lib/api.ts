@@ -1,12 +1,41 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
+// Custom API error class
+export class ApiError extends Error {
+  code: number;
+  httpStatus: number;
+  httpError: boolean;
+
+  constructor(message: string, code: number, httpStatus: number) {
+    super(message);
+    this.name = 'ApiError';
+    this.code = code;
+    this.httpStatus = httpStatus;
+    this.httpError = httpStatus >= 400;
+  }
+}
+
 // Helper to handle API responses
 async function handleResponse<T>(response: Response): Promise<T> {
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({ error: 'Request failed' }));
-    throw new Error(error.error || `HTTP ${response.status}`);
+  const data = await response.json().catch(() => ({}));
+
+  // Check if response contains an error (even with HTTP 200)
+  if (data.code === 403 || data.error === 'Forbidden') {
+    console.error('[ApiError] 403 Forbidden:', { url: response.url, status: response.status, data });
+    throw new ApiError(data.error || 'Forbidden', 403, response.status);
   }
-  return response.json();
+
+  if (data.error) {
+    console.error('[ApiError] API error:', { url: response.url, status: response.status, data });
+    throw new ApiError(data.error, data.code || response.status, response.status);
+  }
+
+  if (!response.ok) {
+    console.error('[ApiError] HTTP error:', { url: response.url, status: response.status, data });
+    throw new ApiError(data.error || `HTTP ${response.status}`, response.status, response.status);
+  }
+
+  return data as T;
 }
 
 // Get auth token from localStorage

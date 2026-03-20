@@ -40,9 +40,11 @@ const SingleListing = () => {
   const shareWhatsapp = `https://wa.me/?text=${encodeURIComponent(`Check out: ${listing.title} - ${formatPrice(listing.rentPrice)}/mo. ${window.location.href}`)}`;
 
   return (
-    <div className="flex min-h-screen flex-col pb-20 sm:pb-0">
+    <div className="flex min-h-screen flex-col sm:pb-0">
       <Header />
-      <div className="container py-6">
+      <main className="flex-1">
+        <div className="pt-16">
+          <div className="container py-6">
         <Link to="/listings" className="text-xs text-muted-foreground hover:text-primary transition-colors">← Back to listings</Link>
 
         <div className="mt-3 aspect-video overflow-hidden rounded-xl border border-border bg-secondary">
@@ -70,6 +72,20 @@ const SingleListing = () => {
             {formatPrice(listing.rentPrice)}
             <span className="text-base font-normal text-muted-foreground">/month</span>
           </p>
+
+          {/* Contact buttons - moved up */}
+          <div className="mt-6 rounded-xl border border-border bg-card p-5">
+            <h2 className="font-display font-bold">Contact Landlord</h2>
+            <p className="mt-1 text-sm text-muted-foreground">👤 {listing.landlordName}</p>
+            <div className="mt-3 flex gap-3">
+              <a href={`tel:${listing.contactPhone}`} className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary py-3.5 text-sm font-bold text-primary-foreground transition-all hover:shadow-lg hover:shadow-primary/20">
+                <HiOutlinePhone size={18} /> Call
+              </a>
+              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-whatsapp py-3.5 text-sm font-bold text-whatsapp-foreground transition-all hover:shadow-lg hover:shadow-whatsapp/20">
+                <MessageCircle size={18} /> WhatsApp
+              </a>
+            </div>
+          </div>
 
           <div className="mt-4 flex flex-wrap gap-2 text-sm">
             <span className="rounded-lg bg-secondary border border-border px-3 py-1.5 text-muted-foreground">{listing.propertyType}</span>
@@ -110,19 +126,6 @@ const SingleListing = () => {
             <div className="mt-3"><MapView listings={[listing]} className="h-[250px]" /></div>
           </div>
 
-          <div className="mt-6 hidden sm:block rounded-xl border border-border bg-card p-5">
-            <h2 className="font-display font-bold">Contact Landlord</h2>
-            <p className="mt-1 text-sm text-muted-foreground">👤 {listing.landlordName}</p>
-            <div className="mt-3 flex gap-3">
-              <a href={`tel:${listing.contactPhone}`} className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary py-3.5 text-sm font-bold text-primary-foreground transition-all hover:shadow-lg hover:shadow-primary/20">
-                <HiOutlinePhone size={18} /> Call
-              </a>
-              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-whatsapp py-3.5 text-sm font-bold text-whatsapp-foreground transition-all hover:shadow-lg hover:shadow-whatsapp/20">
-                <MessageCircle size={18} /> WhatsApp
-              </a>
-            </div>
-          </div>
-
           <div className="mt-4 flex gap-3">
             <a href={shareWhatsapp} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-secondary transition-all">
               <HiOutlineShare size={14} /> Share
@@ -146,20 +149,9 @@ const SingleListing = () => {
             <div className="mt-4 grid gap-4 grid-cols-2 sm:grid-cols-4">{related.map((l) => <ListingCard key={l.id} listing={l} />)}</div>
           </div>
         )}
-      </div>
-
-      {/* Mobile sticky CTA */}
-      <div className="fixed bottom-0 left-0 right-0 border-t border-border glass p-3 sm:hidden safe-area-bottom">
-        <div className="flex gap-2">
-          <a href={`tel:${listing.contactPhone}`} className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary py-3.5 text-sm font-bold text-primary-foreground">
-            <HiOutlinePhone size={18} /> Call
-          </a>
-          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-whatsapp py-3.5 text-sm font-bold text-whatsapp-foreground">
-            <MessageCircle size={18} /> WhatsApp
-          </a>
         </div>
       </div>
-
+      </main>
       <Footer />
     </div>
   );

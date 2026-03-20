@@ -7,7 +7,9 @@ const About = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      
+      <main className="flex-1">
+        <div className="pt-16">
+
       {/* Hero Section */}
       <div className="relative bg-gradient-to-br from-primary/10 via-primary/5 to-background py-16 sm:py-24">
         <div className="container max-w-4xl text-center">
@@ -179,6 +181,8 @@ const About = () => {
           </div>
         </div>
       </div>
+      </div>
+      </main>
       <Footer />
     </div>
   );

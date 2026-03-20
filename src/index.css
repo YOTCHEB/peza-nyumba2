@@ -6,49 +6,53 @@
 
 @layer base {
   :root {
-    --background: 222 47% 6%;
-    --foreground: 210 20% 92%;
+    /* Clean White Pro Theme */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
 
-    --card: 222 40% 9%;
-    --card-foreground: 210 20% 92%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
 
-    --popover: 222 40% 9%;
-    --popover-foreground: 210 20% 92%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 142 72% 50%;
-    --primary-foreground: 222 47% 6%;
+    --primary: 142 72% 45%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 222 30% 14%;
-    --secondary-foreground: 210 20% 80%;
+    --secondary: 222 25% 96%;
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 222 25% 16%;
-    --muted-foreground: 215 15% 55%;
+    --muted: 222 15% 94%;
+    --muted-foreground: 222 10% 45%;
 
-    --accent: 195 90% 50%;
-    --accent-foreground: 222 47% 6%;
+    --accent: 195 85% 45%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 72% 55%;
+    --destructive: 0 72% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 222 25% 15%;
-    --input: 222 25% 15%;
-    --ring: 142 72% 50%;
+    --border: 222 15% 90%;
+    --input: 222 15% 90%;
+    --ring: 142 72% 45%;
 
-    --radius: 0.875rem;
+    --radius: 1rem;
 
-    --whatsapp: 142 70% 49%;
+    --whatsapp: 142 70% 40%;
     --whatsapp-foreground: 0 0% 100%;
 
-    --surface: 222 35% 11%;
+    --surface: 222 20% 98%;
 
-    --glow-primary: 142 72% 50%;
-    --glow-accent: 195 90% 50%;
+    --glow-primary: 142 72% 45%;
+    --glow-accent: 195 85% 45%;
   }
 }
 
 @layer base {
   * {
     @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
   }
   body {
     @apply bg-background text-foreground antialiased overflow-x-hidden;
@@ -57,6 +61,7 @@
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Space Grotesk', system-ui, sans-serif;
+    @apply font-semibold tracking-tight;
   }
 }
 
@@ -66,15 +71,15 @@
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
   .glow-primary {
-    box-shadow: 0 0 20px hsl(142 72% 50% / 0.15), 0 0 60px hsl(142 72% 50% / 0.05);
+    box-shadow: 0 0 20px hsl(142 72% 45% / 0.1), 0 0 40px hsl(142 72% 45% / 0.05);
   }
   .glow-accent {
-    box-shadow: 0 0 20px hsl(195 90% 50% / 0.15), 0 0 60px hsl(195 90% 50% / 0.05);
+    box-shadow: 0 0 20px hsl(195 85% 45% / 0.1), 0 0 40px hsl(195 85% 45% / 0.05);
   }
   .glass {
-    background: hsl(222 40% 9% / 0.7);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: hsl(0 0% 100% / 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
   }
   .gradient-border {
     border: 1px solid transparent;
@@ -87,7 +92,7 @@
     inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, hsl(142 72% 50% / 0.3), hsl(195 90% 50% / 0.3));
+    background: linear-gradient(135deg, hsl(142 72% 45% / 0.2), hsl(195 85% 45% / 0.2));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
@@ -110,6 +115,19 @@
 
 .leaflet-popup-tip {
   background: hsl(222 40% 9%) !important;
+}
+
+/* Fix map z-index issues */
+.leaflet-container {
+  z-index: 0 !important;
+}
+
+.leaflet-pane {
+  z-index: 1 !important;
+}
+
+.leaflet-popup-pane {
+  z-index: 2 !important;
 }
 
 /* Custom scrollbar */
